@@ -73,17 +73,17 @@ router.post('/login', (req, res) => {
 });
 
 // user logout
-router.post('/logout', (req, res) => {
-    if (req.session.loggedIn) {
-      req.session.destroy(() => {
-        res.status(204).end();
-      });
-    }
-    else {
-      alert("You are not logged in!").end();
-    }
-  });
-  
+// router.post('/logout', (req, res) => {
+//     if (req.session.loggedIn) {
+//       req.session.destroy(() => {
+//         res.status(204).end();
+//       });
+//     }
+//     else {
+//       alert("You are not logged in!").end();
+//     }
+//   });
+
 // PUT update user by id
 router.put('/:id', (req, res) => {
     User.update(req.body, {
