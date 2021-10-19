@@ -32,13 +32,13 @@ router.post('/', (req, res) => {
         password: req.body.password
     })
     .then(userData => {res.json(userData);
-        // req.session.save(() => {
-        //     req.session.user_id = userData.id;
-        //     req.session.username = userData.username;
-        //     req.session.loggedIn = true;
+        req.session.save(() => {
+            req.session.user_id = userData.id;
+            req.session.username = userData.username;
+            req.session.loggedIn = true;
 
-        //     res.json(userData);
-        // });
+            res.json(userData);
+        });
     })
     .catch(error => res.status(500).json(error));
 });
@@ -56,33 +56,37 @@ router.post('/login', (req, res) => {
             return;
         }
 
-        // const isPassword = userData.validatePassword(req.body.password);
-        // if (!isPassword) {
-        //     res.status(400).json({ message: 'Password is incorrect' });
-        //     return;
-        // }
+        const isPassword = userData.validatePassword(req.body.password);
+        if (!isPassword) {
+            res.status(400).json({ message: 'Password is incorrect' });
+            return;
+        }
 
-        // req.session.save(() => {
-        //     req.session.user_id = userData.id;
-        //     req.session.username = userData.username;
-        //     req.session.loggedIn = true;
+        req.session.save(() => {
+            req.session.user_id = userData.id;
+            req.session.username = userData.username;
+            req.session.loggedIn = true;
     
             res.json({ user: userData, message: 'You are now logged in!' });
-        // });
+        });
+        
+          
     });
 });
 
 // user logout
-// router.post('/logout', (req, res) => {
-//     if (req.session.loggedIn) {
-//       req.session.destroy(() => {
-//         res.status(204).end();
-//       });
-//     }
-//     else {
-//       alert("You are not logged in!").end();
-//     }
-//   });
+router.post('/logout', (req, res) => {
+    if (req.session.loggedIn) {
+      req.session.destroy(() => {
+          console.log('hello')
+        res.status(204).end();
+      });
+    }
+    else {
+        console.log('what is wrong with you')
+      res.status(404).end()
+    }
+  });
 
 // PUT update user by id
 router.put('/:id', (req, res) => {
